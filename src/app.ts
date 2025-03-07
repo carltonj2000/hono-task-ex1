@@ -1,15 +1,16 @@
 import CreateApp from "@/lib/create-app.js";
+import configureOpenAPI from "@/lib/configure-open-api.js";
+import index from '@/routes/index.route.js';
 
 const app = CreateApp();
 
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
-});
+configureOpenAPI(app);
 
-app.get("/error", (c) => {
-  c.status(422);
-  c.var.logger.debug("Wow! Log.");
-  throw new Error("Oh No!"); // test onError handler below
-});
+const routes = [
+  index
+];
 
+routes.forEach((route) => {
+  app.route("/", route);
+})
 export default app;
